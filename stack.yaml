@@ -1,0 +1,15 @@
+nix:
+  enable: true
+  packages:
+  - zlib.dev
+  - zlib.out
+  - postgresql_17
+
+snapshot: lts-23.14
+
+packages:
+- .
+
+extra-deps:
+- git: https://github.com/danielambda/smart-primitives.git
+  commit: 03193ff51a339bccaa3250f40b9d2fa032782824

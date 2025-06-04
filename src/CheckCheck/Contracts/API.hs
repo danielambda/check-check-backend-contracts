@@ -3,13 +3,13 @@
 
 module CheckCheck.Contracts.API (API) where
 
-import Servant.API ((:<|>)(..), (:>))
+import Servant.API ((:<|>)((:<|>)), (:>))
 
-import CheckCheck.Contracts.Receipts (ReceiptsAPI)
-import CheckCheck.Contracts.Users (UsersAPI)
-import CheckCheck.Contracts.Groups (GroupsAPI)
+import CheckCheck.Contracts.Budget (BudgetAPI)
+import CheckCheck.Contracts.Requests (RequestsAPI)
 
 type API
-  =    "receipts" :> ReceiptsAPI
-  :<|> "groups" :> GroupsAPI
-  :<|> UsersAPI
+  =    "requests" :> RequestsAPI
+  :<|> "budget" :> BudgetAPI
+
+

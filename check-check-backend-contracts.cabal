@@ -11,13 +11,8 @@ build-type:     Simple
 library
   exposed-modules:
       CheckCheck.Contracts.API
-      CheckCheck.Contracts.Users
-      CheckCheck.Contracts.Users.Budget
-      CheckCheck.Contracts.Users.Contacts
-      CheckCheck.Contracts.Users.OutgoingRequests
-      CheckCheck.Contracts.Users.IncomingRequests
-      CheckCheck.Contracts.Groups
-      CheckCheck.Contracts.Receipts
+      CheckCheck.Contracts.Budget
+      CheckCheck.Contracts.Requests
   other-modules:
       Paths_check_check_backend_contracts
   hs-source-dirs:

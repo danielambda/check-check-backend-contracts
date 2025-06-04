@@ -1,36 +1,38 @@
 {
-  description = "Check-Check backend flake";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    systems.url = "github:nix-systems/default";
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.systems.follows = "systems";
-    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    haskell-flake.url = "github:srid/haskell-flake";
+
+    smart-primitives.url = "github:danielambda/smart-primitives";
   };
 
-  outputs = { nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-        hPkgs = pkgs.haskell.packages.ghc984;
-
-        packages = [
-          pkgs.nixd
-
-          hPkgs.ghc
-          hPkgs.ghcid
-          hPkgs.haskell-language-server
-          pkgs.stack
-
-          pkgs.zlib
-        ];
-      in {
-        devShell = pkgs.mkShell {
-          inherit packages;
-
-          LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath packages;
+  outputs = inputs@{ nixpkgs, flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = nixpkgs.lib.systems.flakeExposed;
+      imports = [inputs.haskell-flake.flakeModule];
+      perSystem = { self', config, pkgs, ... }:
+        let
+        in {
+        haskellProjects.default = {
+          autoWire = ["packages"];
+          packages = {
+            smart-primitives.source = inputs.smart-primitives;
+          };
         };
-      }
-    );
+
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [config.haskellProjects.default.outputs.devShell];
+          packages = [pkgs.nixd];
+
+          shellHook = ''
+            set -a
+            source ./.env
+            set +a
+          '';
+        };
+
+        packages.default = self'.packages.check-check-backend-contracts;
+      };
+    };
 }

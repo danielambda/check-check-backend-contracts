@@ -9,8 +9,8 @@ module CheckCheck.Contracts.Requests
   , PostRequest
   , GetRequests
   , CompleteRequest
-  , RequestResp(..)
-  , RequestItemResp(..)
+  , RequestResp(..), RequestItemResp(..)
+  , PostRequestReqBody(..), RequestItemReqBody(..)
   ) where
 
 import Data.Aeson (ToJSON, FromJSON)
